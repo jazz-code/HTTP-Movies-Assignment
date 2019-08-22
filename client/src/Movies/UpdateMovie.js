@@ -2,30 +2,30 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const initialItem = {
-  name: '',
-  price: '',
-  imageUrl: '',
-  description: '',
-  shipping: ''
+    id: '',
+  title: '',
+  director: '',
+  metascore: '',
+  stars: [],
 };
 
 const UpdateMovie = props => {
-  const [item, setItem] = useState(initialItem);
-//   console.log(props.movie)
+  const [item, setItem] = useState({});
+   console.log(item)
   useEffect(() => {
     const id = props.match.params.id;
-    const itemInArr = props.movie.find(item => {
+    const itemInArr = props.item.find(item => {
         console.log(item.id, id)
         return `${item.id}` === id});
     if (itemInArr) setItem(itemInArr);
-  }, [props.movie, props.match.params.id]);
+  }, [props.item, props.match.params.id]);
 
   const changeHandler = e => {
     e.persist();
     let value = e.target.value;
-    if (e.target.name === 'price') {
-      value = parseInt(value, 10);
-    }
+    // if (e.target.name === 'price') {
+    //   value = parseInt(value, 10);
+    // }
 
     setItem({
       ...item,
@@ -55,7 +55,7 @@ const UpdateMovie = props => {
           name="title"
           onChange={changeHandler}
           placeholder="title"
-          value={props.movie.title}
+          value={item.title}
         />
 
         <input
@@ -63,7 +63,7 @@ const UpdateMovie = props => {
           name="director"
           onChange={changeHandler}
           placeholder="director"
-          value={props.movie.director}
+          value={item.director}
         />
 
         <input
@@ -71,7 +71,7 @@ const UpdateMovie = props => {
           name="metascore"
           onChange={changeHandler}
           placeholder="metascore"
-          value={props.movie.metascore}
+          value={item.metascore}
         />
 
         <input
@@ -79,7 +79,7 @@ const UpdateMovie = props => {
           name="stars"
           onChange={changeHandler}
           placeholder="stars"
-          value={props.movie.stars}
+          value={[item.stars]}
         />
 
         <button className="">Update</button>

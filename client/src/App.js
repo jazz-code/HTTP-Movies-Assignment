@@ -8,13 +8,13 @@ import FormikUpdateMovie from "./Movies/UpdateMovie";
 
 const App = () => {
   const [savedList, setSavedList] = useState([]);
-  const [movie, setMovie] = useState([])
+  const [item, setItem] = useState([])
   useEffect(() => {
     axios
       .get('http://localhost:5000/api/movies')
       .then(res => {
         // console.log(res)
-        setMovie(res.data)})
+        setItem(res.data)})
       .catch(error => console.log(error));
   }, []);
 
@@ -33,7 +33,7 @@ const App = () => {
         }}
       />
       <Route path="/update-movie/:id" render={props => {
-        return <FormikUpdateMovie {...props} movie={movie} setMovie={setMovie} />
+        return <FormikUpdateMovie {...props} item={item} setItem={setItem} />
       }} />
     
     </>
