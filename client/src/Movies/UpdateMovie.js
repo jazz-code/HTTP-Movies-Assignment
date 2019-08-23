@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const initialItem = {
-    id: '',
+  id: '',  
   title: '',
   director: '',
   metascore: '',
@@ -11,7 +11,8 @@ const initialItem = {
 
 const UpdateMovie = props => {
   const [item, setItem] = useState({});
-   console.log(item)
+//   const [stars, setStars]
+//    console.log(item)
   useEffect(() => {
     const id = props.match.params.id;
     const itemInArr = props.item.find(item => {
@@ -22,28 +23,36 @@ const UpdateMovie = props => {
 
   const changeHandler = e => {
     e.persist();
-    let value = e.target.value;
-    // if (e.target.name === 'price') {
-    //   value = parseInt(value, 10);
-    // }
-
+    let value = e.target.value
     setItem({
       ...item,
-      [e.target.name]: value
+      [e.target.name]: value,
+    //   starsHandler(idx, e)
     });
   };
 
+//   const starsHandler = e => {
+//       e.preventDefault();
+//       const setStars = [...item.stars]
+//       setStars[idx] = e.target.value
+//       setItem({
+//           item,
+//           stars: setStars
+//       })
+//   }
+
   const handleSubmit = e => {
     e.preventDefault();
-    // axios
-    //   .put(`http://localhost:5000/update-movie/${props.movie.id}`, props.movie)
-    //   .then(res => {
-    //     console.log(res);
-    //     setItem(initialItem);
-    //     props.updateItems(res.data);
-    //     props.history.push('/movies');
-    //   })
-    //   .catch(err => console.log(err.response));
+    axios
+      .put(`http://localhost:5000/api/movies/${item.id}`, item)
+      .then(res => {
+        console.log("put request",res, item);
+        setItem(initialItem);
+        console.log("setItem", props.setItem)
+        props.setItem(res.data);
+        // props.history.push(`/api/movies/${item.id}`);
+      })
+      .catch(err => console.log(err.response));
   };
 
   return (
@@ -79,7 +88,7 @@ const UpdateMovie = props => {
           name="stars"
           onChange={changeHandler}
           placeholder="stars"
-          value={[item.stars]}
+          value={item.stars}
         />
 
         <button className="">Update</button>
