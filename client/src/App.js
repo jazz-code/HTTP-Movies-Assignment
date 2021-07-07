@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route } from "react-router-dom";
+import axios from "axios";
 import SavedList from "./Movies/SavedList";
 import MovieList from "./Movies/MovieList";
 import Movie from "./Movies/Movie";
+import FormikUpdateMovie from "./Movies/UpdateMovie";
 
 const App = () => {
   const [savedList, setSavedList] = useState([]);
+  const [item, setItem] = useState([])
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/api/movies')
+      .then(res => {
+        // console.log(res)
+        setItem(res.data)})
+      .catch(error => console.log(error));
+  }, []);
 
   const addToSavedList = movie => {
     setSavedList([...savedList, movie]);
@@ -21,6 +32,10 @@ const App = () => {
           return <Movie {...props} addToSavedList={addToSavedList} />;
         }}
       />
+      <Route path="/update-movie/:id" render={props => {
+        return <FormikUpdateMovie {...props} item={item} setItem={setItem} />
+      }} />
+    
     </>
   );
 };
